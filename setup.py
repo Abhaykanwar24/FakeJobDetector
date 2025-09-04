@@ -13,7 +13,7 @@ def get_requirements(file_path:str)->List[str]:
 
 
 setup(
-name="my_first_project",
+name="FakeJobDetector",
 version = "0.0.1",
 author="Abhaykanwar Singh",
 author_email="abhaykanwar962@gmail.com",
