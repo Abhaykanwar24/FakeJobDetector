@@ -6,4 +6,6 @@ xgboost
 seaborn
 Flask
 nltk
+bs4
+imblearn
 -e .
