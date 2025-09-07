@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Fraud Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f9f9f9;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+        select, textarea, input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        input[type="submit"] {
+            background: #007BFF;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        input[type="submit"]:hover {
+            background: #0056b3;
+        }
+        .output-box {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border: 1px solid transparent;
+        }
+        .output-box.fraud {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+        .output-box.legit {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        .reload-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            margin-top: 15px;
+            text-decoration: none;
+            text-align: center;
+        }
+        .reload-btn.fraud { background-color: #dc3545; }
+        .reload-btn.legit { background-color: #28a745; }
+        .error-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            text-align: center;
+        }
+    </style>
+    <script>
+        // Client-side validation
+        function validateForm() {
+            const telecommuting = document.getElementById('telecommuting').value;
+            const hasCompanyLogo = document.getElementById('has_company_logo').value;
+            const hasQuestions = document.getElementById('has_questions').value;
+            const fullText = document.getElementById('full_text').value.trim();
+
+            if (!['0', '1'].includes(telecommuting) || !['0', '1'].includes(hasCompanyLogo) || !['0', '1'].includes(hasQuestions)) {
+                alert('Please select valid options for Telecommuting, Company Logo, and Questions.');
+                return false;
+            }
+            if (fullText.length < 10) {
+                alert('Please provide a job description with at least 10 characters.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Job Fraud Detection</h2>
+
+        {% if error %}
+            <div class="error-box">{{ error }}</div>
+        {% endif %}
+
+        <form action="{{ url_for('predict_datapoint') }}" method="post" onsubmit="return validateForm()">
+            <label for="telecommuting">Telecommuting</label>
+            <select name="telecommuting" id="telecommuting" required>
+                <option value="">-- Select --</option>
+                <option value="1" {% if telecommuting == "1" %}selected{% endif %}>Yes</option>
+                <option value="0" {% if telecommuting == "0" %}selected{% endif %}>No</option>
+            </select>
+
+            <label for="has_company_logo">Has Company Logo</label>
+            <select name="has_company_logo" id="has_company_logo" required>
+                <option value="">-- Select --</option>
+                <option value="1" {% if has_company_logo == "1" %}selected{% endif %}>Yes</option>
+                <option value="0" {% if has_company_logo == "0" %}selected{% endif %}>No</option>
+            </select>
+
+            <label for="has_questions">Has Questions</label>
+            <select name="has_questions" id="has_questions" required>
+                <option value="">-- Select --</option>
+                <option value="1" {% if has_questions == "1" %}selected{% endif %}>Yes</option>
+                <option value="0" {% if has_questions == "0" %}selected{% endif %}>No</option>
+            </select>
+
+            <label for="full_text">Job Description</label>
+            <textarea name="full_text" id="full_text" placeholder="Enter job title and full description (e.g., 'Software Engineer: Develop web applications, requires 3+ years experience...')" required>{{ full_text if full_text else "" }}</textarea>
+
+            <input type="submit" value="Check Fraud">
+        </form>
+
+        {% if prediction %}
+            {% set is_fraud = (results|default('') == 'Fraudulent') %}
+            <div class="output-box {{ 'fraud' if is_fraud else 'legit' }}">
+                Prediction: <span>{{ results }}</span>
+            </div>
+            <div style="text-align:center;">
+                <a href="{{ url_for('predict_datapoint') }}"
+                   class="reload-btn {{ 'fraud' if is_fraud else 'legit' }}">
+                    Reload
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
