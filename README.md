@@ -35,3 +35,65 @@ The system:
   ```python
   smote = SMOTE(random_state=42)
   X_train, y_train = smote.fit_resample(X_train, y_train)
+
+
+# ✅ High Model Performance
+
+| Metric | Score |
+|--------|--------|
+| **Accuracy** | 0.9846 |
+| **F1-Score** | 0.8450 |
+| **Precision** | 0.9375 |
+| **Recall** | 0.7692 |
+
+---
+
+# ✅ EDA and Deployment Ready
+
+- Performed **Exploratory Data Analysis (EDA)** for data understanding and feature engineering  
+- Built a **Flask app (`app.py`)** to deploy the trained model and serve real-time predictions  
+
+---
+
+# 🧠 Tech Stack
+
+**Programming Language:**  
+- Python 3.10+  
+
+**Libraries & Tools:**  
+- `scikit-learn`, `pandas`, `numpy`, `nltk`, `imblearn`, `pickle`, `Flask`  
+
+**Machine Learning:**  
+- XGBOOST, Random Forest, and other ensemble methods  
+
+**NLP:**  
+- Text cleaning, tokenization, stopword removal, TF-IDF vectorization  
+
+**Deployment:**  
+- Flask-based web application  
+
+---
+
+# 🧪 How to Run Locally
+
+### 1️⃣ Clone the Repository
+```bash
+- git clone https://github.com/Abhaykanwar24/FakeJobDetector.git
+- cd FakeJobDetector
+
+###2️⃣ Create and Activate Virtual Environment
+- python -m venv venv
+- source venv/bin/activate   # For Linux/Mac
+- venv\Scripts\activate      # For Windows
+
+###3️⃣ Install Dependencies
+pip install -r requirements.txt
+
+###4️⃣ Run the Training Pipeline
+- python src/train_pipeline.py
+
+###5️⃣ Run the Flask App
+- python app.py
+
+
+
