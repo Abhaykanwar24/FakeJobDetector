@@ -4,16 +4,18 @@ import nltk
 import os
 from src.pipeline.predict_pipeline import CustomData, PredictPipeline
 
-# 🧩 Ensure NLTK stopwords are available (fix for Streamlit deployment)
+# 🧩 Ensure NLTK resources are available (fix for Streamlit deployment)
 nltk_data_dir = os.path.join(os.getcwd(), "nltk_data")
 if not os.path.exists(nltk_data_dir):
     os.mkdir(nltk_data_dir)
 nltk.data.path.append(nltk_data_dir)
 
-try:
-    nltk.corpus.stopwords.words('english')
-except LookupError:
-    nltk.download('stopwords', download_dir=nltk_data_dir)
+# ✅ Download required NLTK datasets safely
+for resource in ["stopwords", "wordnet", "omw-1.4"]:
+    try:
+        nltk.data.find(f"corpora/{resource}")
+    except LookupError:
+        nltk.download(resource, download_dir=nltk_data_dir)
 
 # 🎯 Streamlit Page Setup
 st.set_page_config(page_title="Fake Job Detector", page_icon="🧠", layout="centered")
@@ -71,4 +73,7 @@ if st.button("🔍 Predict"):
 
 # 🧾 Footer
 st.markdown("---")
-st.markdown("Developed by **Abhaykanwar Singh** | [GitHub](https://github.com/Abhaykanwar24)")
+st.markdown(
+    "Developed by **Abhaykanwar Singh** | "
+    "[GitHub](https://github.com/Abhaykanwar24) | "
+)
