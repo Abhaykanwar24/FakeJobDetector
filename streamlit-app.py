@@ -1,6 +1,19 @@
 import streamlit as st
 import pandas as pd
+import nltk
+import os
 from src.pipeline.predict_pipeline import CustomData, PredictPipeline
+
+# 🧩 Ensure NLTK stopwords are available (fix for Streamlit deployment)
+nltk_data_dir = os.path.join(os.getcwd(), "nltk_data")
+if not os.path.exists(nltk_data_dir):
+    os.mkdir(nltk_data_dir)
+nltk.data.path.append(nltk_data_dir)
+
+try:
+    nltk.corpus.stopwords.words('english')
+except LookupError:
+    nltk.download('stopwords', download_dir=nltk_data_dir)
 
 # 🎯 Streamlit Page Setup
 st.set_page_config(page_title="Fake Job Detector", page_icon="🧠", layout="centered")
@@ -9,7 +22,7 @@ st.set_page_config(page_title="Fake Job Detector", page_icon="🧠", layout="cen
 st.title("🧠 Fake Job Detector")
 st.markdown(
     """
-    This app uses **NLP + Machine Learning** to detect whether a job posting is **Legitimate** or **Fraudulent**  
+    This app uses **NLP + Machine Learning** to detect whether a job posting is **Legitimate** or **Fraudulent**.  
     Enter the job details below and click **Predict**.
     """
 )
@@ -54,6 +67,8 @@ if st.button("🔍 Predict"):
             st.dataframe(pred_df)
 
         except Exception as e:
-            st.error(f"❌ An error occurred during prediction: {str(e)}")
+            st.error(f"❌ An error occurred during prediction:\n\n{str(e)}")
 
-
+# 🧾 Footer
+st.markdown("---")
+st.markdown("Developed by **Abhaykanwar Singh** | [GitHub](https://github.com/Abhaykanwar24)")
