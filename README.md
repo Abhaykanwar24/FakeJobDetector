@@ -94,7 +94,7 @@ pip install -r requirements.txt
 - python src/components/run_pipeline.py
 
 ###5️⃣ Run the Flask App
-- python app.py
+- python streamlit-app.py
 
 
 
