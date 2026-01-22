@@ -85,12 +85,13 @@ The system:
 - python -m venv venv
 - source venv/bin/activate   # For Linux/Mac
 - venv\Scripts\activate      # For Windows
+- conda activate venv # you can use conda
 
 ###3️⃣ Install Dependencies
 pip install -r requirements.txt
 
 ###4️⃣ Run the Training Pipeline
-- python src/train_pipeline.py
+- python src/components/run_pipeline.py
 
 ###5️⃣ Run the Flask App
 - python app.py
