@@ -9,4 +9,5 @@ nltk
 bs4
 imblearn
 dill
+streamlit
 -e .
