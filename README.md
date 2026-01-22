@@ -91,7 +91,7 @@ The system:
 pip install -r requirements.txt
 
 ###4️⃣ Run the Training Pipeline
-- python src/components/run_pipeline.py
+- python src/pipeline/run_pipeline.py
 
 ###5️⃣ Run the Flask App
 - python streamlit-app.py
